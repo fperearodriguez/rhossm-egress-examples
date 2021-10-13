@@ -5,8 +5,8 @@ metadata:
   namespace: bookinfo
 spec:
   hosts:
-  - bookinfo-custom.apps.myocp4.afe4.sandbox549.opentlc.com
-  - bookinfo-custom.secure.apps.myocp4.afe4.sandbox549.opentlc.com
+  - bookinfo-custom.$EXTERNAL_DOMAIN
+  - bookinfo-custom.secure.$EXTERNAL_DOMAIN
   gateways:
   - istio-system/default-gateway
   http:
