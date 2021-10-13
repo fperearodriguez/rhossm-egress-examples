@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: ratings-egress
+  namespace: bookinfo
+spec:
+  exportTo:
+  - .
+  gateways:
+  - mesh
+  hosts:
+  - mysql.external
+  tcp:
+  - match:
+    - gateways:
+      - mesh
+      port: 3306
+      sourceLabels:
+        app: ratings
+        version: v2-mysql
+    route:
+    - destination:
+        host: default-egress.istio-system.svc.cluster.local
+        port:
+          number: 8443
+        subset: v2-mysql
+      weight: 100

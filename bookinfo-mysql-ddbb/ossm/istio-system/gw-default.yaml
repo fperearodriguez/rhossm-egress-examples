@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: default-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http2
+      protocol: HTTP2
+    hosts:
+    - '*.$EXTERNAL_DOMAIN'
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - '*.secure.$EXTERNAL_DOMAIN'
+    tls:
+      credentialName: ingress-credential
+      mode: SIMPLE # or Mutual, keep in mind the certificate client and server for mTLS

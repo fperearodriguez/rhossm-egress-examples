@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo-custom
+  namespace: bookinfo
+spec:
+  hosts:
+  - bookinfo-custom.apps.myocp4.afe4.sandbox549.opentlc.com
+  - bookinfo-custom.secure.apps.myocp4.afe4.sandbox549.opentlc.com
+  gateways:
+  - istio-system/default-gateway
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage-custom
+        port:
+          number: 9080

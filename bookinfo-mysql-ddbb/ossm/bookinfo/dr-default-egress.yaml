@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: default-egress
+  namespace: bookinfo
+spec:
+  exportTo:
+  - .
+  host: default-egress.istio-system.svc.cluster.local
+  subsets:
+  - name: v2-mysql
+    trafficPolicy:
+      tls:
+        mode: DISABLE
