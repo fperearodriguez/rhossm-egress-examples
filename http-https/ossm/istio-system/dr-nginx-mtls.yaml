@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: nginx-mtls-http
+  namespace: istio-system
+spec:
+  host: nginx.${OCP_APPS_DOMAIN}
+  exportTo:
+    - .
+  subsets:
+  - name: nginx-mtls-origination
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN
+      tls:
+        caCertificates: /etc/istio/nginx-client-certs/ca.crt
+        clientCertificate: /etc/istio/nginx-client-certs/tls.crt
+        privateKey: /etc/istio/nginx-client-certs/tls.key
+        mode: MUTUAL
+        sni: nginx.${OCP_APPS_DOMAIN}

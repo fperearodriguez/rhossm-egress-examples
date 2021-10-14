@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: sleep-egress-http
+  namespace: bookinfo
+spec:
+  exportTo:
+  - .
+  gateways:
+  - mesh
+  hosts:
+  - nginx.${OCP_APPS_DOMAIN}
+  http:
+  - match:
+    - gateways:
+      - mesh
+      port: 80
+      authority:
+        exact: 'nginx.${OCP_APPS_DOMAIN}'
+    route:
+    - destination:
+        host: default-egress.istio-system.svc.cluster.local
+        port:
+          number: 8443
+        subset: nginx-mtls-http
+      weight: 100
+    timeout: 4s
