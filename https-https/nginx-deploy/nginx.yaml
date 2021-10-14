@@ -1,0 +1,66 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: nginx-mtls
+objects:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: nginx-mtls
+      labels:
+        run: nginx-mtls
+    spec:
+      ports:
+      - port: 443
+        protocol: TCP
+      selector:
+        run: nginx-mtls
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: nginx-mtls
+    spec:
+      selector:
+        matchLabels:
+          run: nginx-mtls
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            run: nginx-mtls
+        spec:
+          containers:
+          - name: nginx-mtls
+            image: nginx
+            ports:
+            - containerPort: 443
+            volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx
+              readOnly: true
+            - name: nginx-server-certs
+              mountPath: /etc/nginx-server-certs
+              readOnly: true
+            - name: nginx-ca-certs
+              mountPath: /etc/nginx-ca-certs
+              readOnly: true
+          serviceAccount: nginx
+          volumes:
+          - name: nginx-config
+            configMap:
+              name: nginx-configmap
+          - name: nginx-server-certs
+            secret:
+              secretName: nginx-server-certs
+          - name: nginx-ca-certs
+            secret:
+              secretName: nginx-ca-certs
+parameters:
+  - description: Namespace
+    displayName: Namespace
+    name: NAMESPACE
+    required: true
+  - description: Openshift Apps Domain
+    displayName: Openshift Apps Domain
+    name: OCP_APPS_DOMAIN
+    required: true

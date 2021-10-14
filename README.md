@@ -4,3 +4,5 @@ Some examples for egress gateway usage.
 1. Adding Bookinfo and Bookinfo-custom consuming external MySQL DDBB. Testing TCP egress traffic in this [lab](./bookinfo-mysql-ddbb/)
 
 2. Adding greeter server and greeter client for testing gRPC in RHOSSM. The greeter client will be deployed inside the mesh and the greeter server will be outside the mesh. An Egress gateway will be used to reach the greeter server via mTLS [lab](./rhossm-grpc-example/)
+
+3. Adding a nginx server with mTLS for testing the Egress Gateway in Passthrough mode. The nginx-mtls server will be outside the mesh, the application will be deployed in the mesh (sleep sample app). An Egress gateway in Passthrough mode will be used to reach the nginx server via mTLS [lab](./https-https/)
