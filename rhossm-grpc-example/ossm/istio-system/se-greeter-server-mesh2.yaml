@@ -7,7 +7,7 @@ spec:
   exportTo:
   - '.'
   endpoints:
-  - address: greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com
+  - address: greeter-server.${EXTERNAL_DOMAIN}
     ports:
       grpc-443: 443
     weight: 100

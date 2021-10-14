@@ -4,7 +4,7 @@ metadata:
   name: greeter-server
   namespace: istio-system-pre
 spec:
-  host: greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com
+  host: greeter-server.${EXTERNAL_DOMAIN}
   port:
     targetPort: https
   to:

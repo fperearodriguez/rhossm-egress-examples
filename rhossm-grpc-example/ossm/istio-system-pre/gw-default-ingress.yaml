@@ -12,13 +12,13 @@ spec:
       name: http2
       protocol: HTTP2
     hosts:
-    - '*.apps.myocp4.afe4.sandbox549.opentlc.com'
+    - '*.${EXTERNAL_DOMAIN}'
   - port:
       number: 443
       name: https
       protocol: HTTPS
     hosts:
-    - '*.secure.apps.myocp4.afe4.sandbox549.opentlc.com'
+    - '*.secure.${EXTERNAL_DOMAIN}'
     tls:
       credentialName: greeter-server-certs
       mode: MUTUAL # or Mutual, keep in mind the certificate client and server for mTLS

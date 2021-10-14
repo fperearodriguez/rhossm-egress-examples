@@ -8,13 +8,13 @@ spec:
   - istio-system-pre/default-ingress
   - mesh
   hosts:
-  - greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com
+  - greeter-server.${EXTERNAL_DOMAIN}
   http:
   - match:
     - gateways:
       - istio-system-pre/default-ingress
       authority:
-        exact: 'greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com:443'
+        exact: 'greeter-server.${EXTERNAL_DOMAIN}:443'
     route:
     - destination:
         host: greeter-server
