@@ -77,6 +77,7 @@ Create the Istio objects to route the traffic through the Egress Gateway:
 oc apply -n istio-system -f ossm/istio-system/se-nginx-mtls.yaml
 oc apply -n istio-system -f ossm/istio-system/gw-nginx-mtls.yaml
 oc apply -n istio-system -f ossm/istio-system/vs-egress-nginx-mtls.yaml
+oc apply -n istio-system -f ossm/istio-system/dr-nginx-mtls.yaml
 # oc apply -n bookinfo -f ossm/bookinfo/dr-sleep-egress.yaml (check if you have already created this DR in this NS)
 oc apply -n bookinfo -f ossm/bookinfo/vs-sleep-egress.yaml
 ```
