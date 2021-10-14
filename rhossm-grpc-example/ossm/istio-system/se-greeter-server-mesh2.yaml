@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: greeter-server-mesh2
+  namespace: istio-system
+spec:
+  exportTo:
+  - '.'
+  endpoints:
+  - address: greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com
+    ports:
+      grpc-443: 443
+    weight: 100
+  hosts:
+  - greeter-server.external
+  location: MESH_EXTERNAL
+  ports:
+  - name: grpc-443
+    number: 443
+    protocol: GRPC
+  resolution: DNS

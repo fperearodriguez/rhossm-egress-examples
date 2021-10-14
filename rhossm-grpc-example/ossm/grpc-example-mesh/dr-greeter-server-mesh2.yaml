@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: greeter-egress
+  namespace: grpc-example-mesh
+spec:
+  exportTo:
+  - .
+  host: default-egress.istio-system.svc.cluster.local
+  subsets:
+  - name: greeter-egress
+    trafficPolicy:
+      tls:
+        mode: ISTIO_MUTUAL
+        sni: greeter-server.grpc-example.svc.cluster.local
+  - name: greeter-egress-mesh2
+    trafficPolicy:
+      tls:
+        mode: ISTIO_MUTUAL
+        sni: greeter-server.external

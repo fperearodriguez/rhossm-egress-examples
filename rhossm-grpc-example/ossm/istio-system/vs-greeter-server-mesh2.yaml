@@ -1,0 +1,29 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: greeter-server-mesh2
+  namespace: istio-system
+spec:
+  exportTo:
+  - .
+  gateways:
+  - greeter-default-egress
+  hosts:
+  - greeter-server.external
+  http:
+  - match:
+    - gateways:
+      - greeter-default-egress
+      port: 443
+      authority:
+        exact: 'greeter-server.external:80'
+    rewrite:
+      authority: 'greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com:443'
+    route:
+    - destination:
+        host: greeter-server.external
+        port:
+          number: 443
+        subset: egress-greeter-server-mesh2
+      weight: 100
+    timeout: 4s

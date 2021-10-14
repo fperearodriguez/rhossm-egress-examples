@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: greeter-server
+  namespace: istio-system
+spec:
+  exportTo:
+  - '.'
+  endpoints:
+  - address: greeter-server.grpc-example.svc.cluster.local
+    ports:
+      grpc-8000: 8000
+    weight: 100
+  hosts:
+  - greeter-server.grpc-example.svc.cluster.local
+  location: MESH_EXTERNAL
+  ports:
+  - name: grpc-8000
+    number: 8000
+    protocol: GRPC
+  resolution: DNS

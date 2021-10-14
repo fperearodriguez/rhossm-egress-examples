@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: greeter-server-mesh2
+  namespace: istio-system
+spec:
+  host: greeter-server.external
+  exportTo:
+    - .
+  subsets:
+  - name: egress-greeter-server-mesh2
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN
+      tls:
+        caCertificates: /etc/istio/greeter-client-certs-mesh2/ca.pem
+        clientCertificate: /etc/istio/greeter-client-certs-mesh2/client.pem
+        privateKey: /etc/istio/greeter-client-certs-mesh2/client.key
+        mode: MUTUAL
+        sni: greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com

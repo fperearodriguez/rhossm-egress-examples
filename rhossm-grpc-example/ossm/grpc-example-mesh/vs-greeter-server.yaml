@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: greeter-egress
+  namespace: grpc-example-mesh
+spec:
+  exportTo:
+  - .
+  gateways:
+  - mesh
+  hosts:
+  - greeter-server.grpc-example.svc.cluster.local
+  http:
+  - match:
+    - gateways:
+      - mesh
+      authority:
+        exact: 'greeter-server.grpc-example.svc.cluster.local:80'
+    route:
+    - destination:
+        host: default-egress.istio-system.svc.cluster.local
+        port:
+          number: 443
+        subset: greeter-egress
+      weight: 100
+    timeout: 4s

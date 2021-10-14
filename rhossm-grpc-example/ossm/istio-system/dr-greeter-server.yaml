@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: greeter-server
+  namespace: istio-system
+spec:
+  host: greeter-server.grpc-example.svc.cluster.local
+  exportTo:
+    - .
+  subsets:
+  - name: egress-greeter-server
+    trafficPolicy:
+      loadBalancer:
+        simple: ROUND_ROBIN
+      tls:
+        caCertificates: /etc/istio/greeter-client-certs/ca.pem
+        clientCertificate: /etc/istio/greeter-client-certs/client.pem
+        privateKey: /etc/istio/greeter-client-certs/client.key
+        mode: MUTUAL

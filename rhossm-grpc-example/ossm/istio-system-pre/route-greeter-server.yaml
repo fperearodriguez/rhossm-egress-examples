@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: greeter-server
+  namespace: istio-system-pre
+spec:
+  host: greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com
+  port:
+    targetPort: https
+  to:
+    kind: Service
+    name: istio-ingressgateway
+    weight: 100
+  wildcardPolicy: None
+  tls:
+    termination: passthrough

@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: ingress-greeter
+  namespace: grpc-server
+spec:
+  gateways:
+  - istio-system-pre/default-ingress
+  - mesh
+  hosts:
+  - greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com
+  http:
+  - match:
+    - gateways:
+      - istio-system-pre/default-ingress
+      authority:
+        exact: 'greeter-server.secure.apps.myocp4.afe4.sandbox549.opentlc.com:443'
+    route:
+    - destination:
+        host: greeter-server
+        port:
+          number: 8000
+        subset: greeter-server
+      weight: 100
+    timeout: 4s

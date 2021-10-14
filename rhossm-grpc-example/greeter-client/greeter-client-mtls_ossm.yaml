@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeter-client-mtls
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greeter-client-mtls
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+          app: greeter-client-mtls
+    spec:
+      containers:
+      - name: greeter-client-mtls
+        image: quay.io/fperea_rh/greeter-client:latest
+        env:
+        # Resolve backend IP using cluster-internal DNS name of the backend service
+        - name: GREETER_SERVICE_TARGET
+          value: "greeter-server.grpc-example.svc.cluster.local:80"
+        - name: GREETER_CLIENT_SECURITY
+          value: "insecure"
+      restartPolicy: Always

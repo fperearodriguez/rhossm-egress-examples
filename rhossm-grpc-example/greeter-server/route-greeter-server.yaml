@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: greeter-server
+  namespace: grpc-example
+spec:
+  host: greeter-server.apps.myocp4.afe4.sandbox549.opentlc.com
+  port:
+    targetPort: http2
+  to:
+    kind: Service
+    name: greeter-server
+    weight: 100
+  wildcardPolicy: None

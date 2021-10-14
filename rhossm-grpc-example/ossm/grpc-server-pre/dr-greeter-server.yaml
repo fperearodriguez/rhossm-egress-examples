@@ -1,0 +1,12 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: ingress-greeter
+  namespace: grpc-server
+spec:
+  host: greeter-server
+  subsets:
+  - name: greeter-server
+    trafficPolicy:
+      tls:
+        mode: ISTIO_MUTUAL

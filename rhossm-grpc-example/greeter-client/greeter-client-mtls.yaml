@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeter-client-mtls
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greeter-client-mtls
+  template:
+    metadata:
+      labels:
+          app: greeter-client-mtls
+    spec:
+      containers:
+      - name: greeter-client-mtls
+        image: quay.io/fperea_rh/greeter-client:latest
+        volumeMounts:
+        - name: greeter-certs
+          mountPath: "/etc/greetercerts"
+          readOnly: true
+        env:
+        # Resolve backend IP using cluster-internal DNS name of the backend service
+        - name: GREETER_SERVICE_TARGET
+          value: "greeter-server.grpc-example.svc.cluster.local:8000"
+        - name: CERTS_PATH
+          value: "/etc/greetercerts"
+        - name: GREETER_CLIENT_SECURITY
+          value: "mtls"
+      restartPolicy: Always
+      volumes:
+      - name: greeter-certs
+        secret:
+          secretName: greeter-client-certs

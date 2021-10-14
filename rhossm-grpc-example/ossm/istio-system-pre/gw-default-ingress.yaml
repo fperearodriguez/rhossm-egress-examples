@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: default-ingress
+  namespace: istio-system-pre
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http2
+      protocol: HTTP2
+    hosts:
+    - '*.apps.myocp4.afe4.sandbox549.opentlc.com'
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - '*.secure.apps.myocp4.afe4.sandbox549.opentlc.com'
+    tls:
+      credentialName: greeter-server-certs
+      mode: MUTUAL # or Mutual, keep in mind the certificate client and server for mTLS
