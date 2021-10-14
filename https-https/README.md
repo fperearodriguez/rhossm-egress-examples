@@ -2,6 +2,8 @@
 
 In this example, the app pod will connect to an external service using HTTPS. For this, we will use an Egress Gateway in **PASSTHROUGH** mode.
 
+The _OCP_APPS_DOMAIN_ is the external domain in which the nginx server will be exposed.
+
 ## Deploy the Nginx server with mTLS configuration
 
 Set the external domain in the _[params.env](./params.env)_ file.
