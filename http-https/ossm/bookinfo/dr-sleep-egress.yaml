@@ -9,3 +9,4 @@ spec:
     trafficPolicy:
       tls:
         mode: ISTIO_MUTUAL
+        sni: nginx.apps.myocp4.afe4.sandbox549.opentlc.com
