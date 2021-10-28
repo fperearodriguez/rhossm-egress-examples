@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: istio-tcp-egress
+  namespace: istio-system
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+  - hosts:
+    - mysql.external
+    port:
+      name: tcp-10843
+      number: 10843
+      protocol: TCP

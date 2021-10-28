@@ -8,3 +8,5 @@ Some examples for egress gateway usage.
 3. Adding a nginx server with mTLS for testing the Egress Gateway in Passthrough mode. The nginx-mtls server will be outside the mesh, the application will be deployed in the mesh (sleep sample app). An Egress gateway in Passthrough mode will be used to reach the nginx server via mTLS [lab](./https-https/)
 
 4. Adding a nginx server with mTLS for testing the Egress Gateway with TLS origination. The nginx-mtls server will be outside the mesh, the application will be deployed in the mesh (sleep sample app). An Egress gateway with TLS origination mode will be used to reach the nginx server via mTLS [lab](./http-https/)
+
+5. Adding a bookinfo application using an external MySQL database. The bookinfo application will be deployed in two different namespaces: front and back.

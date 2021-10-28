@@ -1,0 +1,55 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews-custom
+spec:
+  hosts:
+  - reviews-custom.back.svc.cluster.local
+  exportTo:
+  - back
+  - front
+  gateways:
+  - mesh
+  http:
+  - route:
+    - destination:
+        host: reviews-custom.back.svc.cluster.local
+        subset: v3
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ratings-custom
+spec:
+  hosts:
+  - ratings
+  exportTo:
+  - back
+  - front
+  gateways:
+  - mesh
+  http:
+  - route:
+    - destination:
+        host: ratings
+        subset: v2-mysql
+      timeout: 4
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: details-custom
+spec:
+  hosts:
+  - details-custom.back.svc.cluster.local
+  exportTo:
+  - back
+  - front
+  gateways:
+  - mesh
+  http:
+  - route:
+    - destination:
+        host: details-custom.back.svc.cluster.local
+        subset: v1
+---

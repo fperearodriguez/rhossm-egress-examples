@@ -1,0 +1,19 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+ name: details-viewer
+ namespace: back
+spec:
+ selector:
+   matchLabels:
+     app: details-custom
+ action: ALLOW
+ rules:
+ - from:
+   - source:
+       principals:
+       - cluster.local/ns/front/sa/bookinfo-productpage-custom
+   to:
+   - operation:
+       methods:
+       - GET

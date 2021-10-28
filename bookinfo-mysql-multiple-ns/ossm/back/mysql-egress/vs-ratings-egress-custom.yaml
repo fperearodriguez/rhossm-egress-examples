@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mysql-egress
+  namespace: back
+spec:
+  exportTo:
+  - .
+  gateways:
+  - mesh
+  hosts:
+  - mysql.external
+  tcp:
+  - match:
+    - port: 3306
+      sourceLabels:
+        app: ratings-custom
+        version: v2-mysql
+    route:
+    - destination:
+        host: istio-egressgateway.istio-system.svc.cluster.local
+        port:
+          number: 10843
+        subset: v2-mysql
+      weight: 100

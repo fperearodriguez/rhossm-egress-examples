@@ -1,0 +1,66 @@
+##################################################################################################
+# Productpage-custom services
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: productpage-custom
+  labels:
+    app: productpage-custom
+    service: productpage-custom
+spec:
+  ports:
+  - port: 9080
+    name: http
+  selector:
+    app: productpage-custom
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-productpage-custom
+  labels:
+    account: productpage-custom
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productpage-custom-v1
+  labels:
+    app: productpage-custom
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: productpage-custom
+      version: v1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: productpage-custom
+        version: v1
+    spec:
+      serviceAccountName: bookinfo-productpage-custom
+      containers:
+      - name: productpage-custom
+        image: maistra/examples-bookinfo-productpage-v1:2.0.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9080
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        env:
+        - name: REVIEWS_HOSTNAME
+          value: reviews-custom.back.svc.cluster.local
+        - name: DETAILS_HOSTNAME
+          value: details-custom.back.svc.cluster.local
+        - name: RATINGS_HOSTNAME
+          value: ratings.back.svc.cluster.local
+      volumes:
+      - name: tmp
+        emptyDir: {}
+---
