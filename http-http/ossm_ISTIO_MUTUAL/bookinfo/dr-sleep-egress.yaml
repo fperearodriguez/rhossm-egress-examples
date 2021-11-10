@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sleep-egress
+  namespace: bookinfo
+spec:
+  exportTo:
+  - .
+  host: default-egress.istio-system.svc.cluster.local
+  subsets:
+  - name: nginx-mtls
+    trafficPolicy:
+      tls:
+        mode: ISTIO_MUTUAL
+        sni: nginx.${OCP_APPS_DOMAIN}

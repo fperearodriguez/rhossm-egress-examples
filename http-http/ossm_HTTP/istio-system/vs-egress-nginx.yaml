@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: egress-nginx-http
+  namespace: istio-system
+spec:
+  exportTo:
+  - .
+  gateways:
+  - istio-default-egress-nginx-http
+  hosts:
+  - nginx.${OCP_APPS_DOMAIN}
+  http:
+  - match:
+    - gateways:
+      - istio-default-egress-nginx-http
+      port: 80
+    route:
+    - destination:
+        host: nginx.${OCP_APPS_DOMAIN}
+        port:
+          number: 80
+        subset: nginx-no-mtls-origination

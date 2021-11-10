@@ -1,0 +1,46 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: nginx
+objects:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: nginx
+      labels:
+        run: nginx
+    spec:
+      ports:
+      - port: 80
+        protocol: TCP
+      selector:
+        run: nginx
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: nginx
+    spec:
+      selector:
+        matchLabels:
+          run: nginx
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            run: nginx
+        spec:
+          containers:
+          - name: nginx
+            image: nginx
+            ports:
+            - containerPort: 80
+          serviceAccount: nginx
+parameters:
+  - description: Namespace
+    displayName: Namespace
+    name: NAMESPACE
+    required: true
+  - description: Openshift Apps Domain
+    displayName: Openshift Apps Domain
+    name: OCP_APPS_DOMAIN
+    required: true
