@@ -73,6 +73,7 @@ oc apply -n bookinfo -f ossm/bookinfo/vs-sleep-egress.yaml
 Check connectivity from sleep pod to the nginx-mtls server throught the Egress Gateway:
 ```
 oc exec $SLEEP-POD-NAME -- curl https://nginx.${OCP_APPS_DOMAIN} --cacert /etc/sleep/tls/ca.crt  --cert /etc/sleep/tls/tls.crt --key /etc/sleep/tls/tls.key -vI
+```
 
 ## Cleanup
 
