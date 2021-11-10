@@ -58,7 +58,7 @@ oc create secret generic nginx-client-certs -n bookinfo --from-file=tls.crt=./ce
 
 Deploy the sleep application in the bookinfo namespace:
 ```
-oc apply -f sleep/deploy.yaml
+oc apply -f sleep/deploy.yaml -n bookinfo
 ```
 
 Create the Istio objects to route the traffic through the Egress Gateway:
@@ -66,10 +66,22 @@ Create the Istio objects to route the traffic through the Egress Gateway:
 oc apply -n istio-system -f ossm/istio-system/se-nginx-mtls.yaml
 oc apply -n istio-system -f ossm/istio-system/gw-nginx-mtls.yaml
 oc apply -n istio-system -f ossm/istio-system/vs-egress-nginx-mtls.yaml
-# oc apply -n bookinfo -f ossm/bookinfo/dr-sleep-egress.yaml (check if you have already created this DR in this NS)
+oc apply -n bookinfo -f ossm/bookinfo/dr-sleep-egress.yaml
 oc apply -n bookinfo -f ossm/bookinfo/vs-sleep-egress.yaml
 ```
 
 Check connectivity from sleep pod to the nginx-mtls server throught the Egress Gateway:
 ```
 oc exec $SLEEP-POD-NAME -- curl https://nginx.${OCP_APPS_DOMAIN} --cacert /etc/sleep/tls/ca.crt  --cert /etc/sleep/tls/tls.crt --key /etc/sleep/tls/tls.key -vI
+
+## Cleanup
+
+Delete the sleep application from the bookinfo namespace:
+```
+oc delete -f sleep/deploy.yaml -n bookinfo
+```
+
+Delete the Nginx server
+```
+oc delete project nginx-mtls
+```
