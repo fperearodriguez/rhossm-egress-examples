@@ -52,11 +52,11 @@ All the MySQL instances should be running in _ddbb_ project.
 
 ## Egress TCP using Kubernetes Services. TCP routing from sidecar to egress and from egress to external service.
 ### Explanation
-Ratings application consumes external MySQL databases ([Ratings config here](./bookinfo-app/back/bookinfo-ratings-v2-mysql_custom.yaml)). This application will connect to _mysql.external_ host, which will be resolved by the Kubernetes Services object. Then, the Kubernetes Services object will route the traffic to the three mysql instances.
+Ratings application consumes external MySQL databases ([Ratings config here](./bookinfo-app/back/bookinfo-ratings-v2-mysql_custom.yaml)). This application will connect to _mysql_ host, which will be resolved by the Kubernetes Services object. Then, the Kubernetes Services object will route the traffic to the three mysql instances.
 
 ### App diagram
 The traffic flow is:
-1. The sidecar intercept the request from the app container (ratings) to _mysql.external_.
+1. The sidecar intercept the request from the app container (ratings) to _mysql_.
 2. The Virtual Service and Destination Rule objects route the request from the sidecar (bookinfo) to the egress Gateway (istio-system).
 3. At this point, the Virtual Service and Kubernetes Services objects resolve the endpoints and route the traffic through the egress Gateway.
 
