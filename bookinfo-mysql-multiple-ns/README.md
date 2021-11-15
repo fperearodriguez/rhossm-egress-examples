@@ -10,9 +10,9 @@ In this example, the components used are as follows:
 
 ## Prerequisites
  - OCP up and running.
- - DNS zone (external hosted zone in this example). Thus, I can use an alias instead of the external service name. The idea is to abstract the applications from the external service's name using the **Service Entry** object.
  - Openshift Service Mesh installed [Openshift Service Mesh](https://docs.openshift.com/container-platform/4.8/service_mesh/v2x/ossm-about.html).
  - Egress configured in SMCP.
+ - Kubernetes service for MySQL DDBB.
 
 
 ## MySQL instances
@@ -50,15 +50,15 @@ oc process -f mysql-deploy/mysql-template.yaml --param-file=mysql-deploy/params-
 
 All the MySQL instances should be running in _ddbb_ project.
 
-## Egress TCP using Service Entry. TCP routing from sidecar to egress and from egress to external service.
+## Egress TCP using Kubernetes Services. TCP routing from sidecar to egress and from egress to external service.
 ### Explanation
-Ratings application consumes external MySQL databases ([Ratings config here](./bookinfo-app/back/bookinfo-ratings-v2-mysql_custom.yaml)). This application will connect to _mysql.external_ host, which will be resolved by the Service Entry object. Then, the Service Entry object will route the traffic to the three mysql instances.
+Ratings application consumes external MySQL databases ([Ratings config here](./bookinfo-app/back/bookinfo-ratings-v2-mysql_custom.yaml)). This application will connect to _mysql.external_ host, which will be resolved by the Kubernetes Services object. Then, the Kubernetes Services object will route the traffic to the three mysql instances.
 
 ### App diagram
 The traffic flow is:
 1. The sidecar intercept the request from the app container (ratings) to _mysql.external_.
 2. The Virtual Service and Destination Rule objects route the request from the sidecar (bookinfo) to the egress Gateway (istio-system).
-3. At this point, the Virtual Service and Service Entry objects resolve the endpoints and route the traffic through the egress Gateway.
+3. At this point, the Virtual Service and Kubernetes Services objects resolve the endpoints and route the traffic through the egress Gateway.
 
 <img src="./bookinfo-app/diagram_single_app.png" alt="Bookinfo app" width=100%>
 
@@ -140,7 +140,7 @@ Create Istio objects in the back namespace:
 ```
 oc apply -n back -f ossm/back/mysql-egress/dr-tcp-egress.yaml
 oc apply -n back -f ossm/back/mysql-egress/vs-ratings-egress-custom.yaml
-oc apply -n back -f ossm/back/mysql-egress/se-mysql-custom.yaml
+oc apply -n back -f ossm/back/mysql-egress/svc-mysql.yaml
 ```
 
 2. Route the traffic from the _tcp-egress_ egress gateway to the external service. Since this objects are created in the _istio-system_ namespace, this task must be performed by the cluster-admin user.
